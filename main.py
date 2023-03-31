@@ -153,6 +153,9 @@ class TestStrategy(bt.Strategy):
 
 #dhfaskidfhkalsdjfa
 #dfjaskldfjhsakdjhf
+
+#fdaslfd
+#fadsofasdf
         print("当前时点（今日）：", 'datetime.date(0)', self.data.lines.datetime.date(0), 'close', self.data.lines.close[0])
         # %d整数 %f浮点数 %s字符串 %x十六进制整数
         self.log('Open, %.2f' % self.dataopen[0], doprint=True)  # %.2f表示以小数点后两位的形式输出
