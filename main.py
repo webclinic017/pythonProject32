@@ -73,11 +73,11 @@ class TestStrategy(bt.Strategy):
         # closeline）计算相关指标。以计算5日均线为例，各种不同级别的简写方式都是默认基于收盘价
         # close 计算5日均线，所以返回的结果都是一致的：
 
-        self.sma = bt.indicators.SimpleMovingAverage(
-            self.datas[0], period=self.params.maperiod)
+        # self.sma = bt.indicators.SimpleMovingAverage(
+        #     self.datas[0], period=self.params.maperiod)
 
         # Indicators for the plotting show
-        bt.indicators.ExponentialMovingAverage(self.datas[0], period=25)
+        # bt.indicators.ExponentialMovingAverage(self.datas[0], period=25)
         # bt.indicators.WeightedMovingAverage(self.datas[0], period=25,
         #                                     subplot=True)
         # bt.indicators.StochasticSlow(self.datas[0])
@@ -169,8 +169,8 @@ class TestStrategy(bt.Strategy):
             # pisiton 持仓的意思
 
             # Not yet ... we MIGHT BUY if ...
-            if self.dif[0]>5 and self.macd[0]>0 and self.macd[0]>self.macd[-1] and self.dataopen[0]<self.dataclose[0]
-            if self.dataclose[0] > self.sma[0]:
+            if self.dif[0] > 5 and self.macd[0] > 0 and self.macd[0] > self.macd[-1] and self.dataopen[0] < self.dataclose[0]:
+            # if self.dataclose[0] > self.sma[0]:
                 # current close less than previous close
                 self.log('BUY CREATE, %.2f' % self.dataclose[0], doprint=True)
 
@@ -178,8 +178,8 @@ class TestStrategy(bt.Strategy):
                 self.order = self.buy()
 
         else:
-
-            if self.dataclose[0] < self.sma[0]:
+            if self.macd[0] < -5 or self.dataclose[0]*0.95 > self.buyprice:
+            #if self.dataclose[0] < self.sma[0]:
                 # SELL, SELL, SELL!!! (with all possible default parameters)
                 self.log('SELL CREATE, %.2f' % self.dataclose[0], doprint=True)
 
@@ -252,7 +252,7 @@ if __name__ == '__main__':
 
     data = bt.feeds.GenericCSVData(
         dataname='rb.csv',
-        fromdate=datetime(2022, 4, 1),
+        fromdate=datetime(2020, 4, 1),
         todate=datetime(2023, 2, 2),
         nullvalue=0.0,
         dtformat=('%Y%m%d'),
@@ -285,5 +285,5 @@ if __name__ == '__main__':
     # Print out the final result
     print('Final Portfolio Value: %.2f' % cerebro.broker.getvalue())
 
-    # cerebro.plot()
+    cerebro.plot()
     #生成的图表里两个变量的解释：broker cash（当前剩余的现金）、value（当前的总资产，包括现金和股票价值）

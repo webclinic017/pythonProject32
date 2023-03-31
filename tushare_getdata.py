@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
     # print()
     # 获取螺纹钢主力最近一年的日线数据
-    df = ts.pro_bar(ts_code='RB.SHF', start_date=(pd.Timestamp('now') - pd.Timedelta(days=365)).strftime('%Y%m%d'),
+    df = ts.pro_bar(ts_code='RB.SHF', start_date=(pd.Timestamp('now') - pd.Timedelta(days=2000)).strftime('%Y%m%d'),
                     end_date=pd.Timestamp('now').strftime('%Y%m%d'), asset='FT', freq='D')
 
     # 将日期格式转换为backtrader需要的格式
