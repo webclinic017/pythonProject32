@@ -252,8 +252,8 @@ if __name__ == '__main__':
 
     data = bt.feeds.GenericCSVData(
         dataname='rb.csv',
-        fromdate=datetime(2020, 4, 1),
-        todate=datetime(2023, 2, 2),
+        fromdate=datetime(2021, 4, 1),
+        todate=datetime(2022, 2, 2),
         nullvalue=0.0,
         dtformat=('%Y%m%d'),
         datetime=0,
