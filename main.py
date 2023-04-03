@@ -120,14 +120,14 @@ class TestStrategy(bt.Strategy):
                     'BUY EXECUTED, Price: %.2f, Cost: %.2f, Comm %.2f' %
                     (order.executed.price,
                      order.executed.value,
-                     order.executed.comm), doprint=True)
+                     order.executed.comm))
                 self.buyprice = order.executed.price
                 self.buycomm = order.executed.comm
             elif order.issell():
                 self.log('SELL EXECUTED, Price: %.2f, Cost: %.2f, Comm %.2f' %
                          (order.executed.price,
                           order.executed.value,
-                          order.executed.comm), doprint=True)
+                          order.executed.comm))
 
             self.bar_executed = len(self)
 
@@ -156,10 +156,10 @@ class TestStrategy(bt.Strategy):
 
 #fdaslfd
 #fadsofasdf
-        print("当前时点（今日）：", 'datetime.date(0)', self.data.lines.datetime.date(0), 'close', self.data.lines.close[0])
+        # print("当前时点（今日）：", 'datetime.date(0)', self.data.lines.datetime.date(0), 'close', self.data.lines.close[0])
         # %d整数 %f浮点数 %s字符串 %x十六进制整数
-        self.log('Open, %.2f' % self.dataopen[0], doprint=True)  # %.2f表示以小数点后两位的形式输出
-        self.log('Close, %.2f' % self.dataclose[0], doprint=True)  # %.2f表示以小数点后两位的形式输出
+        self.log('Open, %.2f' % self.dataopen[0])  # %.2f表示以小数点后两位的形式输出
+        self.log('Close, %.2f' % self.dataclose[0])  # %.2f表示以小数点后两位的形式输出
 
         if self.order:
             return
@@ -172,7 +172,7 @@ class TestStrategy(bt.Strategy):
             if self.dif[0] > 5 and self.macd[0] > 0 and self.macd[0] > self.macd[-1] and self.dataopen[0] < self.dataclose[0]:
             # if self.dataclose[0] > self.sma[0]:
                 # current close less than previous close
-                self.log('BUY CREATE, %.2f' % self.dataclose[0], doprint=True)
+                self.log('BUY CREATE, %.2f' % self.dataclose[0])
 
                 # Keep track of the created order to avoid a 2nd order
                 self.order = self.buy()
@@ -181,7 +181,7 @@ class TestStrategy(bt.Strategy):
             if self.macd[0] < -5 or self.dataclose[0]*0.95 > self.buyprice:
             #if self.dataclose[0] < self.sma[0]:
                 # SELL, SELL, SELL!!! (with all possible default parameters)
-                self.log('SELL CREATE, %.2f' % self.dataclose[0], doprint=True)
+                self.log('SELL CREATE, %.2f' % self.dataclose[0])
 
                 # Keep track of the created order to avoid a 2nd order
                 self.order = self.sell()
@@ -201,23 +201,24 @@ class TestStrategy(bt.Strategy):
         # print("已处理的数据点：", len(self.data))
         # print("line的总长度：", self.data.buflen())
     def stop(self):
-        self.log('(MA Period %2d) Ending Value %.2f' %
-                 (self.params.maperiod, self.broker.getvalue()), doprint=True)
+        self.log('(period_me_short %2d, period_me_long %2d) Ending Value %.2f' %
+                 (self.params.period_me_short,self.params.period_me_long, self.broker.getvalue()), doprint=True)
 
 if __name__ == '__main__':
     # Create a cerebro entity
     cerebro = bt.Cerebro()
 
     # Add a strategy
-    cerebro.addstrategy(TestStrategy)
+    # cerebro.addstrategy(TestStrategy)
 
     # strats = cerebro.optstrategy(
     #     TestStrategy,
     #     maperiod=range(10, 31))
 
-    # strats = cerebro.optstrategy(
-    #     TestStrategy,
-    #     maperiod=range(10, 31))
+    strats = cerebro.optstrategy(
+        TestStrategy,
+        period_me_short=range(2, 13),
+        period_me_long=range(2, 50))
 
     # print(os.path.basename('/root/runoob.txt'))  # 返回文件名
     # print(os.path.dirname('/root/runoob.txt'))  # 返回目录路径
@@ -277,13 +278,13 @@ if __name__ == '__main__':
     cerebro.broker.setcommission(commission=0.0)
 
     # Print out the starting conditions
-    print('Starting Portfolio Value: %.2f' % cerebro.broker.getvalue())
+    # print('Starting Portfolio Value: %.2f' % cerebro.broker.getvalue())
 
     # Run over everything
     cerebro.run()
 
     # Print out the final result
-    print('Final Portfolio Value: %.2f' % cerebro.broker.getvalue())
+    # print('Final Portfolio Value: %.2f' % cerebro.broker.getvalue())
 
-    cerebro.plot()
+    # cerebro.plot()
     #生成的图表里两个变量的解释：broker cash（当前剩余的现金）、value（当前的总资产，包括现金和股票价值）
